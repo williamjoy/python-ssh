@@ -34,8 +34,6 @@ class Task(threading.Thread):
 		self.done_queue.put(self)
 		self.semaphore.release()
 		
-
-
 class TaskGroup(threading.Thread):
 	def __init__(self,parallel=10):	 
 		threading.Thread.__init__(self)
@@ -51,11 +49,3 @@ class TaskGroup(threading.Thread):
 				t=self.task_queue.get()
 				self.semaphore.acquire()
 				t.start()	
-if __name__=='__main__':
-	x=Task(key='jx-sf-zzrd00.jx',cmd='ssh jx-sf-zzrd00.jx uname -a && sl;~/opbin/bin/cfmod ;echo ha :w$x$x fads',finish_pool=None)
-	y=TaskGroup()
-	y.add_task(x.key,x.cmd)
-	y.add_task('hello','uname -a')
-	y.start()
-	print y.done_queue.get().stdout
-
