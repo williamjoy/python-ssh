@@ -59,7 +59,7 @@ if (not command):
     parser.print_help()
     sys.exit(-2)
 
-hostnames=list_host.list_host_from_file(filename)
+hostnames=get_host_list.list_host_from_file(filename)
 
 if(login_name):
 	password=getpass.getpass()	
