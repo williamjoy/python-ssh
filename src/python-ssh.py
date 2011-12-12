@@ -4,7 +4,7 @@
 '''
     Parallel LHCK utility
         
-    Author      : Wei Lichun<weilichun@baidu.com>
+    Author      : Wei Lichun<lichun.william@gmail.com>
     Create Date : Thu Sep  8 21:58:04 CST 2011
     Version     : 0.9
 	Recent Changes:
@@ -14,24 +14,12 @@
 '''
 
 '''
-Usage: plhck (-f filename|-q string) command
-
-Options:
-  --version             show program's version number and exit
-  -h, --help            show this help message and exit
-  -f FILENAME, --file=FILENAME
-                        the host file which stores the host list
-  -q QSTRING, --qstring=QSTRING
-                        the qstring to list host
-
-Report any bugs to weilichun@baidu.com
 
 
 This is free software; see the source for copying conditions. 
 There is NO warranty; not even for MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE.
 
-Report any bugs to weilichun@baidu.com
 '''
 import subprocess
 import optparse
@@ -45,10 +33,9 @@ import process_thread
 import get_host_list
 
 
-parser=optparse.OptionParser(usage="%prog [ -p <max parallel thread number> ] (-f filename|-q string) [ -l login_name ] command",version='%prog 1.2',epilog="Report any bugs to weilichun@baidu.com", prog='plhck')
+parser=optparse.OptionParser(usage="%prog [ -p <max parallel thread number> ] -f filename [ -l login_name ] command",version='%prog 1.2',epilog="Report any bugs to lichun.william@gmail.com", prog='python-ssh')
 parser.add_option("-p","--parallel"   ,action="store",type="int",dest="parallel",default=10,help="max number of parallel threads ,default is 10")
 parser.add_option("-f","--file"   ,action="store",type="string",dest="filename",help="the host file which stores the host list")
-parser.add_option("-q","--qstring",action="store",type="string",dest="qstring",help="the qstring to list host")
 parser.add_option("-l","--login_name",action="store",type="string",dest="login_name",help="Specifies the user to log in as on the remote machine.  This also may be specified on a per-host basis in the configuration file")
 parser.add_option("-e","--regexp",metavar="PATTERN",action="store",type="string",dest="pattern",help="Use PATTERN as the pattern; useful to protect patterns beginning with -.")
 parser.add_option("-v","--invert-match",action="store_false",dest="invert",default=True,help="Invert the sense of matching, to select non-matching lines.")
@@ -56,15 +43,14 @@ parser.add_option("-v","--invert-match",action="store_false",dest="invert",defau
 
 (options,command)=parser.parse_args()
 
-qstring=options.qstring
 filename=options.filename
 login_name=options.login_name
 pattern=options.pattern
 parallel=options.parallel
 sshpass_cmd='sshpass'
 
-if (not qstring and not filename):
-    print ('Error:QString argument or filename is required')
+if (not filename):
+    print ('Error:filename argument is required')
     parser.print_help()
     sys.exit(-2)
 
@@ -73,10 +59,7 @@ if (not command):
     parser.print_help()
     sys.exit(-2)
 
-if(qstring):
-    hostnames=list_host.list_host(qstring)
-elif(filename):
-	hostnames=list_host.list_host_from_file(filename)
+hostnames=list_host.list_host_from_file(filename)
 
 if(login_name):
 	password=getpass.getpass()	
