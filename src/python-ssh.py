@@ -66,7 +66,7 @@ if(login_name):
 
 def signal_handler(signal, frame):
         print 'Ctrl+C Caught, Exiting..'
-        sys.exit(0)
+        sys.exit(1)
 
 if __name__ == '__main__':
     tasks=[]

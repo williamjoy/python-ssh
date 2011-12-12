@@ -16,6 +16,7 @@ import optparse
 import sys
 import copy
 import shlex
+import signal
 
 import process_thread
 import get_host_list
@@ -37,9 +38,14 @@ else:
 	sys.exit(-3)
 	
 
+def signal_handler(signal, frame):
+        print 'Ctrl+C Caught, Exiting..'
+        sys.exit(1)
+
 if __name__ == '__main__':
     tasks=[]
     task_group=process_thread.TaskGroup(parallel)
+    signal.signal(signal.SIGINT, signal_handler)
     print lines
     for line in lines:
         task_group.add_task(line,shlex.split(line))
