@@ -21,12 +21,14 @@ import process_thread
 import get_host_list
 
 parser=optparse.OptionParser(usage="%prog -f filename",version='%prog 1.2',epilog="Report any bugs to lichun.william@gmail.com", prog='pshell')
+parser.add_option("-p","--parallel"   ,action="store",type="int",dest="parallel",default=10,help="max number of parallel threads ,default is 10")
 parser.add_option("-f","--file"   ,action="store",type="string",dest="filename",help="the host file which stores the host list")
 
 
 (options,command)=parser.parse_args()
 
 filename=options.filename
+parallel=options.parallel
 
 if(filename):
 	lines=get_host_list.list_host_from_file(filename)
@@ -37,7 +39,7 @@ else:
 
 if __name__ == '__main__':
     tasks=[]
-    task_group=process_thread.TaskGroup(128)
+    task_group=process_thread.TaskGroup(parallel)
     print lines
     for line in lines:
         task_group.add_task(line,shlex.split(line))
