@@ -37,6 +37,7 @@ parser=optparse.OptionParser(usage="%prog [ -p <max parallel thread number> ] -f
 parser.add_option("-p","--parallel"   ,action="store",type="int",dest="parallel",default=10,help="max number of parallel threads ,default is 10")
 parser.add_option("-f","--file"   ,action="store",type="string",dest="filename",help="the host file which stores the host list")
 parser.add_option("-l","--login_name",action="store",type="string",dest="login_name",help="Specifies the user to log in as on the remote machine.  This also may be specified on a per-host basis in the configuration file")
+parser.add_option("-X","--extra-arg",action="store",type="string",dest="extra_argument",help="Extra command-line argument. for example: -o ConnectTimeOut=10")
 parser.add_option("-e","--regexp",metavar="PATTERN",action="store",type="string",dest="pattern",help="Use PATTERN as the pattern; useful to protect patterns beginning with -.")
 parser.add_option("-v","--invert-match",action="store_false",dest="invert",default=True,help="Invert the sense of matching, to select non-matching lines.")
 
@@ -47,17 +48,17 @@ filename=options.filename
 login_name=options.login_name
 pattern=options.pattern
 parallel=options.parallel
+extra_argument=options.extra_argument
 sshpass_cmd='sshpass'
 
 if (not filename):
-    print ('Error:filename argument is required')
-    parser.print_help()
-    sys.exit(-2)
+    parser.error ('filename argument is required')
+
+if (not extra_argument):
+    parser.error ('extra argument should not be empty if -X option is turned on')
 
 if (not command):
-    print ('Error:command argument is required')
-    parser.print_help()
-    sys.exit(-2)
+    parser.error ('command argument is required')
 
 hostnames=get_host_list.list_host_from_file(filename)
 
@@ -74,20 +75,21 @@ if __name__ == '__main__':
         print ('No Host found from lh util')
         sys.exit(-3)
     command.insert(0,'ssh')
+    command.insert(1,extra_argument)
     if(login_name):
         command.insert(1,login_name)
         command.insert(1,'-l')
         command.insert(0,password)
         command.insert(0,'-p')
         command.insert(0,sshpass_cmd)
-        host_insert_index=4
+        host_insert_index=5
     else:
-        host_insert_index=1
+        host_insert_index=2
     task_group=process_thread.TaskGroup(parallel)
     for host in hostnames:
-        #print command
         ssh_command=copy.copy(command)
         ssh_command.insert(host_insert_index,host)
+        print ssh_command
         task_group.add_task(host,ssh_command)
 
 	signal.signal(signal.SIGINT, signal_handler)
