@@ -19,7 +19,7 @@ def list_host_from_file(filename=''):
 	while(True):
 		host=f.readline().replace('\n','')
 		if host:
-			result.append( host)
+			result.append( host.strip())
 		else:
 			break
 	return result
