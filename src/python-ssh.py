@@ -89,7 +89,6 @@ if __name__ == '__main__':
     for host in hostnames:
         ssh_command=copy.copy(command)
         ssh_command.insert(host_insert_index,host)
-        print ssh_command
         task_group.add_task(host,ssh_command)
 
 	signal.signal(signal.SIGINT, signal_handler)
