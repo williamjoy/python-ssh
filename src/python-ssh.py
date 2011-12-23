@@ -7,10 +7,10 @@
     Author      : Wei Lichun<lichun.william@gmail.com>
     Create Date : Thu Sep  8 21:58:04 CST 2011
     Version     : 0.9
-	Recent Changes:
-		support max parallel thread argument
-		support login_name argument
-		support regex pattern filter, invert match
+    Recent Changes:
+        support max parallel thread argument
+        support login_name argument
+        support regex pattern filter, invert match
 '''
 
 '''
@@ -54,16 +54,13 @@ sshpass_cmd='sshpass'
 if (not filename):
     parser.error ('filename argument is required')
 
-if (not extra_argument):
-    parser.error ('extra argument should not be empty if -X option is turned on')
-
 if (not command):
     parser.error ('command argument is required')
 
 hostnames=get_host_list.list_host_from_file(filename)
 
 if(login_name):
-	password=getpass.getpass()	
+    password=getpass.getpass()
 
 def signal_handler(signal, frame):
         print 'Ctrl+C Caught, Exiting..'
@@ -75,23 +72,24 @@ if __name__ == '__main__':
         print ('No Host found from lh util')
         sys.exit(-3)
     command.insert(0,'ssh')
-    command.insert(1,extra_argument)
+    host_insert_index=1
+    if (extra_argument):
+        command.insert(1,extra_argument)
+        host_insert_index=host_insert_index+1
     if(login_name):
         command.insert(1,login_name)
         command.insert(1,'-l')
         command.insert(0,password)
         command.insert(0,'-p')
         command.insert(0,sshpass_cmd)
-        host_insert_index=5
-    else:
-        host_insert_index=2
+        host_insert_index=host_insert_index+3
     task_group=process_thread.TaskGroup(parallel)
     for host in hostnames:
         ssh_command=copy.copy(command)
         ssh_command.insert(host_insert_index,host)
         task_group.add_task(host,ssh_command)
 
-	signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGINT, signal_handler)
     task_group.start()
     size=len(hostnames)
     index=0
@@ -102,11 +100,11 @@ if __name__ == '__main__':
         task=task_group.done_queue.get()
         if(pattern):
             if(compiled_pattern.search(task.stdout)):
-				matched=True
+                matched=True
             else:
-				matched=False
+                matched=False
             if(not(matched ^ options.invert)):
-				print task.key 
+                print task.key 
         else:
                 print "\033[0;36;40m",index,"of",size,"\033[0;32;40m: =============== \033[0;33;40m",task.key," \033[0;32;40m===============\033[0m"
                 if(task.stdout):
