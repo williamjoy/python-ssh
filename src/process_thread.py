@@ -29,7 +29,7 @@ class Task(threading.Thread):
 		self.semaphore=semaphore
 
 	def run(self):
-		p=subprocess.Popen(self.cmd,stderr=subprocess.STDOUT,stdout=subprocess.PIPE,stdin=None)	
+		p=subprocess.Popen(self.cmd,stderr=subprocess.STDOUT,stdout=subprocess.PIPE,stdin=None,shell=False)	
 		self.stdout=p.communicate()[0]
 		self.done_queue.put(self)
 		self.semaphore.release()
