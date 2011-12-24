@@ -14,12 +14,12 @@ Report bugs to lichun.william@gmail.com
 '''
 
 def list_host_from_file(filename=''):
-	f=open(filename)
-	result=[]
-	while(True):
-		host=f.readline().replace('\n','')
-		if host:
-			result.append( host.strip())
-		else:
-			break
-	return result
+    f=open(filename)
+    result=[]
+    while(True):
+        host=f.readline().replace('\n','')
+        if host:
+            result.append( host.strip())
+        else:
+            break
+    return result
