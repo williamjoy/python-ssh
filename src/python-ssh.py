@@ -33,13 +33,28 @@ import process_thread
 import get_host_list
 
 
-parser=optparse.OptionParser(usage="%prog [ -p <max parallel thread number> ] -f filename [ -l login_name ] command",version='%prog 1.2',epilog="Report any bugs to lichun.william@gmail.com", prog='python-ssh')
-parser.add_option("-p","--parallel"   ,action="store",type="int",dest="parallel",default=10,help="max number of parallel threads ,default is 10")
-parser.add_option("-f","--file"   ,action="store",type="string",dest="filename",help="the host file which stores the host list")
-parser.add_option("-l","--login_name",action="store",type="string",dest="login_name",help="Specifies the user to log in as on the remote machine.  This also may be specified on a per-host basis in the configuration file")
-parser.add_option("-X","--extra-arg",action="store",type="string",dest="extra_argument",help="Extra command-line argument. for example: -o ConnectTimeOut=10")
-parser.add_option("-e","--regexp",metavar="PATTERN",action="store",type="string",dest="pattern",help="Use PATTERN as the pattern; useful to protect patterns beginning with -.")
-parser.add_option("-v","--invert-match",action="store_false",dest="invert",default=True,help="Invert the sense of matching, to select non-matching lines.")
+parser=optparse.OptionParser(
+    usage="%prog [ -p <max parallel thread number> ] -f filename \
+    [ -l login_name ] command",version='%prog 1.2',
+    epilog="Report any bugs to lichun.william@gmail.com", prog='python-ssh')
+parser.add_option("-p","--parallel"   ,action="store",type="int",
+    dest="parallel",default=10,
+    help="max number of parallel threads ,default is 10")
+parser.add_option("-f","--file"   ,action="store",type="string",
+    dest="filename",help="the host file which stores the host list")
+parser.add_option("-l","--login_name",action="store",type="string",
+    dest="login_name",
+    help="Specifies the user to log in as on the remote machine.\
+    This also may be specified on a per-host basis in the configuration file")
+parser.add_option("-X","--extra-arg",action="store",type="string",
+    dest="extra_argument",
+    help="Extra command-line argument. for example: -o ConnectTimeOut=10")
+parser.add_option("-e","--regexp",metavar="PATTERN",action="store",
+    type="string",dest="pattern", help="Use PATTERN as the pattern;\
+    useful to protect patterns beginning with -.")
+parser.add_option("-v","--invert-match",
+    action="store_false",dest="invert",default=True,
+    help="Invert the sense of matching, to select non-matching lines.")
 
 
 (options,command)=parser.parse_args()
@@ -106,6 +121,8 @@ if __name__ == '__main__':
             if(not(matched ^ options.invert)):
                 print task.key 
         else:
-                print "\033[0;36;40m",index,"of",size,"\033[0;32;40m: =============== \033[0;33;40m",task.key," \033[0;32;40m===============\033[0m"
+                print "\033[0;36;40m",index,"of",size,\
+                    "\033[0;32;40m: =============== \033[0;33;40m",\
+                    task.key," \033[0;32;40m===============\033[0m"
                 if(task.stdout):
                         print task.stdout,
