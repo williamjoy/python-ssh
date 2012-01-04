@@ -64,6 +64,7 @@ login_name=options.login_name
 pattern=options.pattern
 parallel=options.parallel
 extra_argument=options.extra_argument
+#TODO:remove dependeny of sshpass
 sshpass_cmd='sshpass'
 
 if (not filename):
