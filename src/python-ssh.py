@@ -2,7 +2,7 @@
 #-*- coding = utf-8 -*-
 ''' the Parallel batch command running environment'''
 '''
-    Parallel LHCK utility
+    Parallel ssh utility
         
     Author      : Wei Lichun<lichun.william@gmail.com>
     Create Date : Thu Sep  8 21:58:04 CST 2011
