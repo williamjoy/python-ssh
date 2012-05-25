@@ -13,7 +13,7 @@ FOR A PARTICULAR PURPOSE.
 Report bugs to lichun.william@gmail.com
 '''
 
-def list_host_from_file(filename=''):
+def get_hosts_from_file(filename=''):
     f=open(filename)
     result=[]
     while(True):

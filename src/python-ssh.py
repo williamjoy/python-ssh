@@ -73,7 +73,7 @@ if (not filename):
 if (not command):
     parser.error ('command argument is required')
 
-hostnames=get_host_list.list_host_from_file(filename)
+hostnames=get_host_list.get_hosts_from_file(filename)
 
 if(login_name):
     password=getpass.getpass()

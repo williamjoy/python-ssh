@@ -35,7 +35,7 @@ filename=options.filename
 parallel=options.parallel
 
 if(filename):
-    lines=get_host_list.list_host_from_file(filename)
+    lines=get_host_list.get_hosts_from_file(filename)
 else:
     print ('No Host found from lh util')
     sys.exit(-3)

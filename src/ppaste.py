@@ -43,8 +43,8 @@ if (not filenames):
 
 
 if __name__ == '__main__':
-    array1=get_host_list.list_host_from_file(filenames[0])
-    array2=get_host_list.list_host_from_file(filenames[1])
+    array1=get_host_list.get_hosts_from_file(filenames[0])
+    array2=get_host_list.get_hosts_from_file(filenames[1])
     for line in zip( array1,array2):
         if(options.to_ip):
             print options.template % (host_to_ip(line[0]),host_to_ip(line[1]))
