@@ -6,7 +6,7 @@
         
     Author      : Wei Lichun<lichun.william@gmail.com>
     Create Date : Thu Sep  8 21:58:04 CST 2011
-    Version     : 0.9
+    Version     : 1.3
     Recent Changes:
         support max parallel thread argument
         support login_name argument
@@ -30,16 +30,20 @@ import re
 import signal
 
 import process_thread
-import get_host_list
+import query_hosts
 
 
 parser=optparse.OptionParser(
-    usage="%prog [ -p <max parallel thread number> ] -f filename \
-    [ -l login_name ] command",version='%prog 1.2',
+    usage="%prog [ -p <max parallel thread number> ] (-f filename |-i igor_range | -r range) \
+    [ -l login_name ] command",version='%prog 1.3',
     epilog="Report any bugs to lichun.william@gmail.com", prog='python-ssh')
 parser.add_option("-p","--parallel"   ,action="store",type="int",
     dest="parallel",default=10,
     help="max number of parallel threads ,default is 10")
+parser.add_option("-r","--range"   ,action="store",type="string",
+    dest="range",help="Range of nodes to operate on")
+parser.add_option("-i","--igor"   ,action="store",type="string",
+    dest="igor",help="Igor Range of nodes to operate on")
 parser.add_option("-f","--file"   ,action="store",type="string",
     dest="filename",help="the host file which stores the host list")
 parser.add_option("-l","--login_name",action="store",type="string",
@@ -67,13 +71,17 @@ extra_argument=options.extra_argument
 #TODO:remove dependeny of sshpass
 sshpass_cmd='sshpass'
 
-if (not filename):
-    parser.error ('filename argument is required')
-
 if (not command):
     parser.error ('command argument is required')
+if (options.filename):
+	hostnames=query_hosts.get_hosts_from_file(options.filename)
+elif(options.range):
+	hostnames=query_hosts.get_hosts_from_range(options.range)
+elif(options.igor):
+	hostnames=query_hosts.get_hosts_from_igor(options.igor)
+else:
+    parser.error ('one filename or range or igor argument is required')
 
-hostnames=get_host_list.get_hosts_from_file(filename)
 
 if(login_name):
     password=getpass.getpass()
@@ -85,7 +93,7 @@ def signal_handler(signal, frame):
 if __name__ == '__main__':
     tasks=[]
     if(not hostnames):
-        print ('No Host found from lh util')
+        print ('No Hosts Returned')
         sys.exit(-3)
     command.insert(0,'ssh')
     host_insert_index=1

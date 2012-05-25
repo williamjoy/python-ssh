@@ -37,7 +37,7 @@ parallel=options.parallel
 if(filename):
     lines=get_host_list.get_hosts_from_file(filename)
 else:
-    print ('No Host found from lh util')
+    print ('No Hosts Returned')
     sys.exit(-3)
     
 def signal_handler(signal, frame):

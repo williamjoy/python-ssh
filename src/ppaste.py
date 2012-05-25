@@ -19,7 +19,7 @@ import get_host_list
 
 parser=optparse.OptionParser(usage='%prog --template filename1 filename2',
     version='%prog 1.2',
-    epilog="Report any bugs to lichun.william@gmail.com", prog='plhck')
+    epilog="Report any bugs to lichun.william@gmail.com", prog='ppaste')
 parser.add_option("-t","--template"   ,action="store",type="string",
     dest="template",help="the template")
 parser.add_option("-i","--hostname-to-ip",action="store_true",
