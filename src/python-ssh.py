@@ -122,8 +122,8 @@ if __name__ == '__main__':
             if(not(matched ^ options.invert)):
                 print task.key 
         else:
-                print "\033[0;36;40m",index,"of",size,\
-                    "\033[0;32;40m: =============== \033[0;33;40m",\
-                    task.key," \033[0;32;40m===============\033[0m"
+                print "\033[0;31;40m",index,"of",size,\
+                    "\033[0;35;40m: =============== \033[0;36;40m",\
+                    task.key," \033[0;35;40m===============\033[0m"
                 if(task.stdout):
                         print task.stdout,
