@@ -47,7 +47,3 @@ def get_hosts_from_igor(range=''):
             return arr[:-1] 
     else:
         return []
-
-if (__name__ == '__main__'):
-	print get_hosts_from_range("@WATCHER")
-	print get_hosts_from_igor("@ug.set.ac2-prod.ssol2_server")
