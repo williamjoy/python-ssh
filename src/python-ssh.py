@@ -24,7 +24,6 @@ FOR A PARTICULAR PURPOSE.
 import subprocess
 import optparse
 import sys
-import getpass
 import copy
 import re
 import signal
@@ -68,8 +67,6 @@ login_name=options.login_name
 pattern=options.pattern
 parallel=options.parallel
 extra_argument=options.extra_argument
-#TODO:remove dependeny of sshpass
-sshpass_cmd='sshpass'
 
 if (not command):
     parser.error ('command argument is required')
@@ -81,10 +78,6 @@ elif(options.igor):
 	hostnames=query_hosts.get_hosts_from_igor(options.igor)
 else:
     parser.error ('one filename or range or igor argument is required')
-
-
-if(login_name):
-    password=getpass.getpass()
 
 def signal_handler(signal, frame):
         print 'Ctrl+C Caught, Exiting..'
@@ -103,10 +96,7 @@ if __name__ == '__main__':
     if(login_name):
         command.insert(1,login_name)
         command.insert(1,'-l')
-        command.insert(0,password)
-        command.insert(0,'-p')
-        command.insert(0,sshpass_cmd)
-        host_insert_index=host_insert_index+3
+        host_insert_index=host_insert_index+2
     task_group=process_thread.TaskGroup(parallel)
     for host in hostnames:
         ssh_command=copy.copy(command)
