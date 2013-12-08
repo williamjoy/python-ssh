@@ -5,7 +5,7 @@ python-ssh
 Commandline Help
 ==========
 
-```bash
+```
 Usage: python-ssh [ -p <max parallel thread number> ] (-f filename |-i igor_range | -r range)     [ -l login_name ] command
 
 Options:
