@@ -71,11 +71,11 @@ extra_argument=options.extra_argument
 if (not command):
     parser.error ('command argument is required')
 if (options.filename):
-	hostnames=query_hosts.get_hosts_from_file(options.filename)
+    hostnames=query_hosts.get_hosts_from_file(options.filename)
 elif(options.range):
-	hostnames=query_hosts.get_hosts_from_range(options.range)
+    hostnames=query_hosts.get_hosts_from_range(options.range)
 elif(options.igor):
-	hostnames=query_hosts.get_hosts_from_igor(options.igor)
+    hostnames=query_hosts.get_hosts_from_igor(options.igor)
 else:
     parser.error ('one filename or range or igor argument is required')
 
@@ -120,8 +120,7 @@ if __name__ == '__main__':
             if(not(matched ^ options.invert)):
                 print task.key 
         else:
-                print "\033[0;31;40m",index,"of",size,\
-                    "\033[0;35;40m: =============== \033[0;36;40m",\
-                    task.key," \033[0;35;40m===============\033[0m"
-                if(task.stdout):
-                        print task.stdout,
+            # 1 of 1 : ===============  william-laptop  ===============
+            print "\033[0;31;40m",index,"of",size,"\033[0;35;40m: =============== \033[0;36;40m",task.key," \033[0;35;40m===============\033[0m"
+            if(task.stdout):
+                print task.stdout,
