@@ -13,6 +13,7 @@ FOR A PARTICULAR PURPOSE.
 Report bugs to lichun.william@gmail.com
 '''
 import subprocess
+import expand_range
 
 def get_hosts_from_file(filename=''):
     f=open(filename)
@@ -27,23 +28,6 @@ def get_hosts_from_file(filename=''):
 
 def get_hosts_from_range(range=''):
     if(range):
-        p=subprocess.Popen(['er','-e',range],stdout=subprocess.PIPE,stdin=None,shell=False)    
-        arr=p.communicate()[0].split('\n')
-        if (arr[-1]):
-            return arr
-        else:
-            return arr[:-1] 
-    else:
-        return []
-
-#oh, really? can't you reuse any code?
-def get_hosts_from_igor(range=''):
-    if(range):
-        p=subprocess.Popen(['yinst','range','-ir',range],stdout=subprocess.PIPE,stdin=None,shell=False)    
-        arr=p.communicate()[0].split('\n')
-        if (arr[-1]):
-            return arr
-        else:
-            return arr[:-1] 
+        return expand_range.expand(range)
     else:
         return []

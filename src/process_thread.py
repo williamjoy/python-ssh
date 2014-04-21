@@ -34,6 +34,9 @@ class Task(threading.Thread):
         self.done_queue.put(self)
         self.semaphore.release()
         
+    def get_cmd():
+        return self.cmd
+
 class TaskGroup(threading.Thread):
     def __init__(self,parallel=10):     
         threading.Thread.__init__(self)
