@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Python-ssh by williamjoy</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Python-ssh</h1>
+        <p>parallel ssh execute over a cluster</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/williamjoy/python-ssh" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/williamjoy/python-ssh/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/williamjoy/python-ssh/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
+<a name="python-ssh" class="anchor" href="#python-ssh"><span class="octicon octicon-link"></span></a>python-ssh</h1>
+
+<p>The Python based paralleling ssh tool, useful for batch executing ssh remote command against a bunch of servers.</p>
+
+<p>It has some features you may be interested:</p>
+
+<ul>
+<li>use compressed hostname ranges, it tool will expand for you</li>
+<li>get server list from file</li>
+<li>support regex match of output, useful to indentify which servers is you wanted. (for example: list servers installed openssl-1.0.1a, Heartbleed impacted !) </li>
+<li>able to use jumpbox, with <code>--extra-arg='-At jumpbox-hostname ssh'</code>
+</li>
+<li>max number of parallel threads control</li>
+</ul><h1>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h1>
+
+<p>create a user friendly install package</p>
+
+<h1>
+<a name="commandline-help" class="anchor" href="#commandline-help"><span class="octicon octicon-link"></span></a>Commandline Help</h1>
+
+<pre><code>Usage: python-ssh [ -p &lt;max parallel thread number&gt; ] (-f filename | -r range)     [ -l login_name ] command
+
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -p PARALLEL, --parallel=PARALLEL
+                        max number of parallel threads ,default is 10
+  -r RANGE, --range=RANGE
+                        Range of nodes to operate on
+  -f FILENAME, --file=FILENAME
+                        the host file which stores the host list
+  -l LOGIN_NAME, --login_name=LOGIN_NAME
+                        Specifies the user to log in as on the remote machine.
+                        This also may be specified on a per-host basis in the
+                        configuration file
+  -X EXTRA_ARGUMENT, --extra-arg=EXTRA_ARGUMENT
+                        Extra command-line argument. for example: -o
+                        ConnectTimeOut=10
+  -e PATTERN, --regexp=PATTERN
+                        Use PATTERN as the pattern;    useful to protect
+                        patterns beginning with -.
+  -v, --invert-match    Invert the sense of matching, to select non-matching
+                        lines.
+
+Report any bugs to lichun.william@gmail.com
+</code></pre>
+
+<h1>
+<a name="hostname-ranges" class="anchor" href="#hostname-ranges"><span class="octicon octicon-link"></span></a>Hostname Ranges</h1>
+
+<p>The utility include er.py for expanding range expressiong, for example</p>
+
+<pre><code>www01-99.google.com
+db01-3.demonware.net
+www1-2.demonware.net,mysql01-9.mysql.com
+</code></pre>
+
+<pre><code>er www1-2.demonware.net,mysql01-9.mysql.com
+www2.demonware.net
+mysql08.mysql.com
+mysql02.mysql.com
+mysql03.mysql.com
+mysql04.mysql.com
+mysql05.mysql.com
+mysql06.mysql.com
+mysql07.mysql.com
+mysql09.mysql.com
+www1.demonware.net
+mysql01.mysql.com
+</code></pre>
+
+<p>help</p>
+
+<pre><code>Usage: er expr1 [expr2 ...]
+
+Options:
+  --version             show program's version number and exit
+  -h, --help            show this help message and exit
+  -s, --sort            sort the out put?
+  -f, --shuffle         shuffle list?
+  -d DELIMITER, --delimiter=DELIMITER
+                        delimiter of the output, default is space
+
+Report any bugs to lichun.william@gmail.com
+</code></pre>
+
+<h1>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h1>
+
+<p>Executing <code>uname</code> on 123 servers with default parrelling thread of 10</p>
+
+<p><code>pssh -lwilliam -r www001-123.github.com -- uname</code></p>
+
+<pre><code></code></pre>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/williamjoy">williamjoy</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
