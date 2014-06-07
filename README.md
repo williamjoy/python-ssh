@@ -75,13 +75,19 @@ help
 ```
 Usage: er expr1 [expr2 ...]
 
-Options:
-  --version             show program's version number and exit
+Expand host ranges with given expressions
+
+positional arguments:
+  expr                  expressions to be expanded
+
+optional arguments:
   -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
   -s, --sort            sort the out put?
   -f, --shuffle         shuffle list?
-  -d DELIMITER, --delimiter=DELIMITER
+  -d DELIMITER, --delimiter DELIMITER
                         delimiter of the output, default is space
+  -n, --newline         same as --delimiter='\n'
 
 Report any bugs to lichun.william@gmail.com
 ```
