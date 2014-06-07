@@ -101,5 +101,5 @@ Executing ```uname``` on 123 servers with default parrelling thread of 10.
 
 Check ```ntpd``` status, dry run, with maximun 2 executing simultaneously.
 
-```pssh -lroot -r db01-2.github.com,web2-9.github.com  --dry-run -P 2 -- /etc/init.d/ntpd status```
+```pssh -lroot -r db01-2.github.com,web2-9.github.com  --dry-run -P 2 -- /etc/init.d/ntpd status
 ```
