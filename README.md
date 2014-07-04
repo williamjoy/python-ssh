@@ -101,3 +101,26 @@ Executing ```uname``` on 123 servers with default parrelling thread of 10.
 Check ```ntpd``` status, dry run, with maximun 2 executing simultaneously.
 
 ```pssh -lroot -r db01-2.github.com,web2-9.github.com  --dry-run -P 2 -- /etc/init.d/ntpd status```
+
+```
+ 1 of 10 : ===============  db01.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no db01.github.com /etc/init.d/ntpd status
+ 2 of 10 : ===============  db02.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no db02.github.com /etc/init.d/ntpd status
+ 3 of 10 : ===============  web3.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web3.github.com /etc/init.d/ntpd status
+ 4 of 10 : ===============  web4.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web4.github.com /etc/init.d/ntpd status
+ 5 of 10 : ===============  web8.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web8.github.com /etc/init.d/ntpd status
+ 6 of 10 : ===============  web5.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web5.github.com /etc/init.d/ntpd status
+ 7 of 10 : ===============  web2.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web2.github.com /etc/init.d/ntpd status
+ 8 of 10 : ===============  web7.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web7.github.com /etc/init.d/ntpd status
+ 9 of 10 : ===============  web9.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web9.github.com /etc/init.d/ntpd status
+ 10 of 10 : ===============  web6.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web6.github.com /etc/init.d/ntpd status
+```
