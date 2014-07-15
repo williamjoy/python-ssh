@@ -18,7 +18,7 @@ Report bugs to lichun.william@gmail.com
 import re
 import sys
 
-NUMBER_RANGE_RE_PATTERN=re.compile("^([_a-z.-]*)([0-9]+)-([0-9]+)((\.[a-z0-9_]+)*.?)$",re.IGNORECASE)
+NUMBER_RANGE_RE_PATTERN=re.compile("^([_a-z.-]*([0-9_a-z.-]*[_a-z.-]+)?)?([0-9]+)-([0-9]+)((\.[a-z0-9_-]+)*.?)$",re.IGNORECASE)
 DELIMETER_RE_PATTERN   =re.compile("[ ,\t]+")
 def expand(r):
     ret = set()
@@ -43,9 +43,9 @@ output is a list, containing the following items:
 def expand_number_range(r):
     m = NUMBER_RANGE_RE_PATTERN.match(r)
     pre =  m.group(1)
-    prefix =  m.group(2)
-    end =  m.group(3)
-    suffix =  m.group(4)
+    prefix =  m.group(3)
+    end =  m.group(4)
+    suffix =  m.group(5)
     number_len = len(end)
     if (number_len > len(prefix)):
         raise Exception("Range out of boundary: %s" % r)
@@ -59,7 +59,6 @@ def expand_number_range(r):
 
     return [ "%s%s%0*d%s" % (pre,prefix,number_len,i,suffix) for i in range(start,end+1)]
 
-
 if __name__ == '__main__':
     print expand('stnd09-10.com')
     print expand('stnd3001-020.stnd.demonware.net')
@@ -70,4 +69,5 @@ if __name__ == '__main__':
     print expand('--')
     print expand('__009-10')
     print expand('stnab-lsg001-3,stnab-ds001-4')
+    print expand('ashdev10001-lsg001-3,stnab-ds001-4')
 
