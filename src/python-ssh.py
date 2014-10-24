@@ -21,8 +21,9 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE.
 
 '''
+from os import getlogin
 import subprocess
-import optparse
+import argparse
 import sys
 import copy
 import re
@@ -34,41 +35,45 @@ import process_thread
 import query_hosts
 
 
-parser=optparse.OptionParser(
-    usage="%prog [ -P <max parallel thread number> ] (-f filename | -r range) \
-    [ -l login_name ] command",version='%prog 1.3',
+parser=argparse.ArgumentParser(
+    usage="%(prog)s [ -P <max parallel number> ] (-f filename | -r range)\
+    [ -l login_name ] command", version='%(prog)s 1.3',
     epilog="Report any bugs to lichun.william@gmail.com", prog='python-ssh')
-parser.add_option("-V","--verbose",action="store_true",default=False,
+parser.add_argument("-V", "--verbose", action="store_true", default=False,
     dest="verbose_mode", help="print more logs")
-parser.add_option("-d","--dry-run",action="store_true",default=False,
+parser.add_argument("-d", "--dry-run", action="store_true", default=False,
     dest="dry_run", help="only print command, without really running it")
-parser.add_option("-p","--password",action="store_true",default=False,
+parser.add_argument("-p", "--password", action="store_true", default=False,
     dest="use_password", help="use ssh password?")
-parser.add_option("-P","--parallel",action="store",type="int",
-    dest="parallel",default=10,
-    help="max number of parallel threads ,default is 10")
-parser.add_option("-r","--range"   ,action="store",type="string",
-    dest="range",help="Range of nodes to operate on")
-parser.add_option("-s","--shuffle"   ,action="store_true",default=False,
-    dest="shuffle",help="Shuffle the server list?")
-parser.add_option("-f","--file"   ,action="store",type="string",
-    dest="filename",help="the host file which stores the host list")
-parser.add_option("-l","--login_name",action="store",type="string",
-    dest="login_name", default="root",
+parser.add_argument("-P", "--parallel", type=int, dest="parallel", default=10,
+    help="max number of parallel threads , default is 10")
+parser.add_argument("-r", "--range"   , action="store",
+    dest="range", help="Range of nodes to operate on")
+parser.add_argument("-s", "--shuffle", action="store_true", default=False,
+    dest="shuffle", help="Shuffle the server list?")
+parser.add_argument("-f", "--file", action="store",
+    dest="filename", help="the host file which stores the host list")
+parser.add_argument("-l", "--login_name", action="store",
+    dest="login_name", default=getlogin(),
     help="Specifies the user to log in as on the remote machine.\
     This also may be specified on a per-host basis in the configuration file")
-parser.add_option("-X","--extra-arg",action="store",type="string",
-    dest="extra_argument",
+parser.add_argument("-X", "--extra-arg", action="store", dest="extra_argument",
     help="Extra command-line argument. for example: -o ConnectTimeOut=10")
-parser.add_option("-e","--regexp",metavar="PATTERN",action="store",
-    type="string",dest="pattern", help="Use PATTERN as the pattern;\
+parser.add_argument("-e", "--regexp", metavar="PATTERN", action="store",
+    dest="pattern",
+    help="Use PATTERN as the pattern;\
     useful to protect patterns beginning with -.")
-parser.add_option("-v","--invert-match",
-    action="store_false",dest="invert",default=True,
+parser.add_argument("--invert-match",
+    action="store_false", dest="invert", default=True,
     help="Invert the sense of matching, to select non-matching lines.")
 
+parser.add_argument("command", nargs='+',
+    help="command line to be executed on remote hosts")
 
-(options,command)=parser.parse_args()
+
+options=parser.parse_args()
+
+command=options.command
 
 filename=options.filename
 login_name=options.login_name
@@ -95,17 +100,17 @@ def signal_handler(signal, frame):
 def insert(l, arg):
     if (isinstance(arg, str)):
         items=arg.split()
-    elif (isinstance(arg,list)):
+    elif (isinstance(arg, list)):
         items=arg
     items.reverse()
     for e in items:
-        l.insert(0,e)
+        l.insert(0, e)
     return l
 
 def append(l, arg):
     if (isinstance(arg, str)):
         items=arg.split()
-    elif (isinstance(arg,list)):
+    elif (isinstance(arg, list)):
         items=arg
     for e in items:
             l.append(e)
@@ -120,24 +125,24 @@ if __name__ == '__main__':
     prefix = []
     suffix = []
     if (extra_argument):
-        insert(prefix,extra_argument)
-    insert(prefix,"-o StrictHostKeyChecking=no")
+        insert(prefix, extra_argument)
+    insert(prefix, "-o StrictHostKeyChecking=no")
 
     if(login_name):
-        insert(prefix,'-l %s' % login_name)
+        insert(prefix, '-l %s' % login_name)
+    insert(prefix, 'ssh')
     if(options.use_password):
-        insert(prefix,'sshpass -p %s' % password)
-    insert(prefix,'ssh')
+        insert(prefix, 'sshpass -p %s' % password)
     if(options.dry_run==True):
-        insert(prefix,'echo')
+        insert(prefix, 'echo')
     task_group=process_thread.TaskGroup(parallel)
     if(options.shuffle):
         random.shuffle(hostnames)
     for host in hostnames:
         ssh_command=copy.copy(prefix)
-        append(ssh_command,host)
-        append(ssh_command,command)
-        task_group.add_task(host,ssh_command)
+        append(ssh_command, host)
+        append(ssh_command, command)
+        task_group.add_task(host, ssh_command)
 
     signal.signal(signal.SIGINT, signal_handler)
     task_group.start()
@@ -159,6 +164,6 @@ if __name__ == '__main__':
             # 1 of 1 : ===============  william-laptop  ===============
             if (options.verbose_mode):
                 print task.cmd
-            print "\033[0;31;40m",index,"of",size,"\033[0;35;40m: =============== \033[0;36;40m",task.key," \033[0;35;40m===============\033[0m"
+            print "\033[0;31;40m", index, "of", size, "\033[0;35;40m: =============== \033[0;36;40m", task.key, " \033[0;35;40m===============\033[0m"
             if(task.stdout):
                 print task.stdout,
