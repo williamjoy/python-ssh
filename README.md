@@ -51,13 +51,13 @@ Hostname Ranges
 ============
 The utility include er.py for expanding range expressiong, for example
 ```
-www01-99.google.com
-db01-3.demonware.net
-www1-2.demonware.net,mysql01-9.mysql.com
+www[01-99].google.com
+db0[1-3].demonware.net
+www[1-2].demonware.net,mysql01-9.mysql.com
 ```
 
 ```
-er www1-2.demonware.net,mysql01-9.mysql.com
+er www[1-2].demonware.net,mysql0[1-9].mysql.com
 www2.demonware.net
 mysql08.mysql.com
 mysql02.mysql.com
@@ -96,11 +96,11 @@ Examples
 ============
 Executing ```uname``` on 123 servers with default parrelling thread of 10.
 
-```pssh -lwilliam -r www001-123.github.com -- uname```
+```pssh -lwilliam -r www[001-123].github.com -- uname```
 
 Check ```ntpd``` status, dry run, with maximun 2 executing simultaneously.
 
-```pssh -lroot -r db01-2.github.com,web2-9.github.com  --dry-run -P 2 -- /etc/init.d/ntpd status```
+```pssh -lroot -r db0[1-2].github.com,web2-9.github.com  --dry-run -P 2 -- /etc/init.d/ntpd status```
 
 ```
  1 of 10 : ===============  db01.github.com  ===============
