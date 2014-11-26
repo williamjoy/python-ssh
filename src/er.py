@@ -17,6 +17,7 @@ There is NO warranty; not even for MERCHANTABILITY or FITNESS
 FOR A PARTICULAR PURPOSE.
 
 '''
+import sys
 import argparse
 import random
 
@@ -30,6 +31,8 @@ parser.add_argument("-s", "--sort", action="store_true", default=False,
     dest="sort", help="sort the out put?")
 parser.add_argument("-f", "--shuffle", action="store_true", default=False,
     dest="shuffle", help="shuffle list?")
+parser.add_argument("-c", "--compress", action="store_true", default=False,
+    dest="compress", help="Compress host list ?")
 parser.add_argument("-d", "--delimiter", action="store", default=' ',
     dest="delimiter", help="delimiter of the output, default is space")
 parser.add_argument("-n", "--newline", action="store_const", dest="delimiter",
@@ -41,6 +44,9 @@ if __name__ == '__main__':
     options =parser.parse_args()
     expr = options.expr
     results =expand_range.expand(",".join(expr))
+    if(options.compress):
+        print expand_range.compress(results)
+        sys.exit(0)
     if(options.sort):
         results.sort()
     elif(options.shuffle):
