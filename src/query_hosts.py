@@ -12,28 +12,25 @@ FOR A PARTICULAR PURPOSE.
 
 Report bugs to lichun.william@gmail.com
 '''
-import subprocess
 import expand_range
 
 def get_hosts_from_file(filename=''):
-  """This function parses the contents of a stream to generate a list of lines.
-  This function removes comments delimited by '#', ingores empty
-  lines, and leading and trailing whitespace.
-  Returns:
-     a list of hosts
-  """
+    """This function reads content from file to generate a list of lines.
+    This function removes comments delimited by '#', ingores empty
+    lines, and leading and trailing whitespace.
+    Returns:
+       a list of hosts
+    """
     f=open(filename)
     result=[]
-    while(True):
-        line=f.readline().replace('\n','')
+    for line in f:
+        line=line.replace('\n','')
         if line:
             idx = line.find('#')
             if idx >= 0:
-                line = line[:idx]
+                line = line[:idx].strip()
             if line:
-                result.append( line.strip())
-        else:
-            break
+                result.append( line )
     return result
     
 def get_hosts_from_range(range=''):
