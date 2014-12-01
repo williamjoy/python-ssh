@@ -45,7 +45,7 @@ if __name__ == '__main__':
     expr = options.expr
     results =expand_range.expand(",".join(expr))
     if(options.compress):
-        print expand_range.compress(results)
+        print ",".join(expand_range.compress(results))
         sys.exit(0)
     if(options.sort):
         results.sort()
