@@ -40,7 +40,7 @@
       </nav>
       <section>
         <h1>
-<a name="python-ssh" class="anchor" href="#python-ssh"><span class="octicon octicon-link"></span></a>python-ssh</h1>
+<a id="python-ssh" class="anchor" href="#python-ssh" aria-hidden="true"><span class="octicon octicon-link"></span></a>python-ssh</h1>
 
 <p>The Python based paralleling ssh tool, useful for batch executing ssh remote command against a bunch of servers.</p>
 
@@ -53,13 +53,15 @@
 <li>able to use jumpbox, with <code>--extra-arg='-At jumpbox-hostname ssh'</code>
 </li>
 <li>max number of parallel threads control</li>
-</ul><h1>
-<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h1>
+</ul>
+
+<h1>
+<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h1>
 
 <p>create a user friendly install package</p>
 
 <h1>
-<a name="commandline-help" class="anchor" href="#commandline-help"><span class="octicon octicon-link"></span></a>Commandline Help</h1>
+<a id="commandline-help" class="anchor" href="#commandline-help" aria-hidden="true"><span class="octicon octicon-link"></span></a>Commandline Help</h1>
 
 <pre><code>Usage: python-ssh [ -p &lt;max parallel thread number&gt; ] (-f filename | -r range)     [ -l login_name ] command
 
@@ -89,16 +91,16 @@ Report any bugs to lichun.william@gmail.com
 </code></pre>
 
 <h1>
-<a name="hostname-ranges" class="anchor" href="#hostname-ranges"><span class="octicon octicon-link"></span></a>Hostname Ranges</h1>
+<a id="hostname-ranges" class="anchor" href="#hostname-ranges" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hostname Ranges</h1>
 
 <p>The utility include er.py for expanding range expressiong, for example</p>
 
-<pre><code>www01-99.google.com
-db01-3.demonware.net
-www1-2.demonware.net,mysql01-9.mysql.com
+<pre><code>www[01-99].google.com
+db0[1-3].demonware.net
+www[1-2].demonware.net,mysql01-9.mysql.com
 </code></pre>
 
-<pre><code>er www1-2.demonware.net,mysql01-9.mysql.com
+<pre><code>er www[1-2].demonware.net,mysql0[1-9].mysql.com
 www2.demonware.net
 mysql08.mysql.com
 mysql02.mysql.com
@@ -116,25 +118,55 @@ mysql01.mysql.com
 
 <pre><code>Usage: er expr1 [expr2 ...]
 
-Options:
-  --version             show program's version number and exit
+Expand host ranges with given expressions
+
+positional arguments:
+  expr                  expressions to be expanded
+
+optional arguments:
   -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
   -s, --sort            sort the out put?
   -f, --shuffle         shuffle list?
-  -d DELIMITER, --delimiter=DELIMITER
+  -d DELIMITER, --delimiter DELIMITER
                         delimiter of the output, default is space
+  -n, --newline         same as --delimiter='\n'
 
 Report any bugs to lichun.william@gmail.com
 </code></pre>
 
 <h1>
-<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h1>
 
-<p>Executing <code>uname</code> on 123 servers with default parrelling thread of 10</p>
+<p>Executing <code>uname</code> on 123 servers with default parrelling thread of 10.</p>
 
-<p><code>pssh -lwilliam -r www001-123.github.com -- uname</code></p>
+<p><code>pssh -lwilliam -r www[001-123].github.com -- uname</code></p>
 
-<pre><code></code></pre>
+<p>Check <code>ntpd</code> status, dry run, with maximun 2 executing simultaneously.</p>
+
+<p><code>pssh -lroot -r db0[1-2].github.com,web2-9.github.com  --dry-run -P 2 -- /etc/init.d/ntpd status</code></p>
+
+<pre><code> 1 of 10 : ===============  db01.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no db01.github.com /etc/init.d/ntpd status
+ 2 of 10 : ===============  db02.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no db02.github.com /etc/init.d/ntpd status
+ 3 of 10 : ===============  web3.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web3.github.com /etc/init.d/ntpd status
+ 4 of 10 : ===============  web4.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web4.github.com /etc/init.d/ntpd status
+ 5 of 10 : ===============  web8.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web8.github.com /etc/init.d/ntpd status
+ 6 of 10 : ===============  web5.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web5.github.com /etc/init.d/ntpd status
+ 7 of 10 : ===============  web2.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web2.github.com /etc/init.d/ntpd status
+ 8 of 10 : ===============  web7.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web7.github.com /etc/init.d/ntpd status
+ 9 of 10 : ===============  web9.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web9.github.com /etc/init.d/ntpd status
+ 10 of 10 : ===============  web6.github.com  ===============
+ssh -l root -o StrictHostKeyChecking=no web6.github.com /etc/init.d/ntpd status
+</code></pre>
       </section>
       <footer>
         <p>Project maintained by <a href="https://github.com/williamjoy">williamjoy</a></p>
