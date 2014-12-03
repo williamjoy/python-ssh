@@ -19,7 +19,7 @@ import shlex
 import signal
 
 import process_thread
-import get_host_list
+import query_hosts
 
 parser=optparse.OptionParser(usage="%prog -f filename",version='%prog 1.2',
     epilog="Report any bugs to lichun.william@gmail.com", prog='pshell')
@@ -35,7 +35,7 @@ filename=options.filename
 parallel=options.parallel
 
 if(filename):
-    lines=get_host_list.get_hosts_from_file(filename)
+    lines=query_hosts.get_hosts_from_file(filename)
 else:
     print ('No Hosts Returned')
     sys.exit(-3)
@@ -60,6 +60,6 @@ if __name__ == '__main__':
         index=index+1
         task=task_group.done_queue.get()
         print "\033[0;36;40m",index,"of",
-            size,"\033[0;32;40m: =============== \033[0;33;40m",
-            task.key," \033[0;32;40m===============\033[0m"
+        size,"\033[0;32;40m: =============== \033[0;33;40m",
+        task.key," \033[0;32;40m===============\033[0m"
         print task.stdout,
