@@ -38,8 +38,8 @@ import imp
 global_plugins = {}
 
 SET_OPERATORS = ['-']
-NUMBER_RANGE_RE_PATTERN=re.compile("^([_a-z.-]*([0-9_a-z.-]*[_a-z.-]+)?)?([0-9]+)-([0-9]+)((\.[a-z0-9_-]+)*.?)$",re.IGNORECASE)
-DELIMETER_RE_PATTERN   =re.compile("[ ,\t]+")
+#NUMBER_RANGE_RE_PATTERN=re.compile("^([_a-z.-]*([0-9_a-z.-]*[_a-z.-]+)?)?([0-9]+)-([0-9]+)((\.[a-z0-9_-]+)*.?)$",re.IGNORECASE)
+
 def expand(range_list, onepass=False):
     """
     Expand a list of lists and set operators into a final host lists 
@@ -68,46 +68,6 @@ def expand(range_list, onepass=False):
     for item in new_list:
         new_list2 += item
     return new_list2
-
-def expands(r):
-    ret = set()
-    for x in DELIMETER_RE_PATTERN.sub(",",r).split(","):
-        if(len(x) == 0):
-            continue
-        if(is_number_range(x)):
-            for y in expand_number_range(x):
-                ret.add(y)
-        else:
-            ret.add(x)
-    return list(ret)
-        
-def is_number_range(r):
-    return NUMBER_RANGE_RE_PATTERN.match(r)!= None
-
-'''Example:
-input stnd23001-020
-output is a list, containing the following items:
-    stnd23{001..020}, with leading 0 paddings
-'''
-def expand_number_range(r):
-    m = NUMBER_RANGE_RE_PATTERN.match(r)
-    pre =  m.group(1)
-    prefix =  m.group(3)
-    end =  m.group(4)
-    suffix =  m.group(5)
-    number_len = len(end)
-    if (number_len > len(prefix)):
-        raise Exception("Range out of boundary: %s" % r)
-    start = prefix[-number_len:]
-    prefix = prefix[0:-number_len]
-    start=int(start)
-    end=int(end)
-
-    if (start >= end):
-        raise Exception("Range out of boundary: %s" % r)
-
-    return [ "%s%s%0*d%s" % (pre,prefix,number_len,i,suffix) for i in range(start,end+1)]
-
 
 def expand_item(range_list, onepass=False):
     """ Expand a list of plugin:parameters into a list of hosts """
