@@ -6,7 +6,7 @@
         
     Author      : Wei Lichun<lichun.william@gmail.com>
     Create Date : Thu Apr  3 14:32:30 CST 2014
-    Version     : 1.0
+    Version     : 1.3
 '''
 
 '''
@@ -44,14 +44,13 @@ if __name__ == '__main__':
     options =parser.parse_args()
     expr = options.expr
     results =expand_range.expand(",".join(expr))
+    delimiter = options.delimiter.replace('\\t', '\t')
+    delimiter = delimiter.replace('\\n', '\n')
     if(options.compress):
-        print ",".join(expand_range.compress(results))
-        sys.exit(0)
+        results=expand_range.compress(results)
     if(options.sort):
         results.sort()
     elif(options.shuffle):
         random.shuffle(results)
-    delimiter = options.delimiter.replace('\\t', '\t')
-    delimiter = delimiter.replace('\\n', '\n')
     print delimiter.join(results)
 
