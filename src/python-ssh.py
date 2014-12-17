@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #-*- coding = utf-8 -*-
 ''' the Parallel batch command running environment'''
 '''
@@ -37,7 +37,7 @@ import query_hosts
 
 parser=argparse.ArgumentParser(
     usage="%(prog)s [ -P <max parallel number> ] (-f filename | -r range)\
-    [ -l login_name ] command", version='%(prog)s 1.3',
+    [ -l login_name ] command",
     epilog="Report any bugs to lichun.william@gmail.com", prog='python-ssh')
 parser.add_argument("-V", "--verbose", action="store_true", default=False,
     dest="verbose_mode", help="print more logs")
@@ -94,7 +94,7 @@ if (options.use_password):
     password=getpass.getpass(prompt="%s@$REMOTE's password:" % login_name)
 
 def signal_handler(signal, frame):
-        print 'Ctrl+C Caught, Exiting..'
+        print('Ctrl+C Caught, Exiting..')
         sys.exit(1)
 
 def insert(l, arg):
@@ -120,7 +120,7 @@ def append(l, arg):
 if __name__ == '__main__':
     tasks=[]
     if(not hostnames):
-        print ('No Hosts Returned')
+        print('No Hosts Returned')
         sys.exit(-3)
     prefix = []
     suffix = []
@@ -159,11 +159,11 @@ if __name__ == '__main__':
             else:
                 matched=False
             if(not(matched ^ options.invert)):
-                print task.key 
+                print(task.key)
         else:
             # 1 of 1 : ===============  william-laptop  ===============
             if (options.verbose_mode):
-                print task.cmd
-            print "\033[0;31;40m", index, "of", size, "\033[0;35;40m: =============== \033[0;36;40m", task.key, " \033[0;35;40m===============\033[0m"
+                print(task.cmd)
+            print("\033[0;31;40m {} of {} \033[0;35;40m: =============== \033[0;36;40m {} \033[0;35;40m===============\033[0m".format(index,size,task.key))
             if(task.stdout):
-                print task.stdout,
+                sys.stdout.write(task.stdout.decode())

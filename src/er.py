@@ -25,7 +25,7 @@ import expand_range
 
 parser =argparse.ArgumentParser(
     description = "Expand host ranges with given expressions",
-    usage ="%(prog)s expr1 [expr2 ...]", version='%(prog)s 1.3',
+    usage ="%(prog)s expr1 [expr2 ...]",
     epilog="Report any bugs to lichun.william@gmail.com", prog='er')
 parser.add_argument("-s", "--sort", action="store_true", default=False,
     dest="sort", help="sort the out put?")
@@ -52,5 +52,5 @@ if __name__ == '__main__':
         results.sort()
     elif(options.shuffle):
         random.shuffle(results)
-    print delimiter.join(results)
+    print(delimiter.join(results))
 

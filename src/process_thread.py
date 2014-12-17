@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr//bin/python3
 #-*- coding = utf-8 -*-
 ''' The List Host Library Python Version'''
 
@@ -16,7 +16,11 @@ Report bugs to lichun.william@gmail.com
 import threading
 import subprocess
 import os
-import Queue
+import sys
+if sys.version_info > (3,0):
+    from queue import Queue
+else:
+    from Queue import Queue
 
 class Task(threading.Thread):
     def __init__(self,key,cmd,finish_pool,semaphore):
@@ -40,8 +44,8 @@ class Task(threading.Thread):
 class TaskGroup(threading.Thread):
     def __init__(self,parallel=10):     
         threading.Thread.__init__(self)
-        self.done_queue=Queue.Queue()
-        self.task_queue=Queue.Queue()
+        self.done_queue=Queue()
+        self.task_queue=Queue()
         self.semaphore=threading.Semaphore(parallel)
     
     def add_task(self,key,cmd):

@@ -47,7 +47,7 @@ def expand(range_list, onepass=False):
     ['foo09', 'foo08', 'foo07', 'foo02', 'foo01', 'foo03', 'foo10']
     >>> 
     """
-    if isinstance(range_list, basestring):
+    if isinstance(range_list, str):
         range_list = [h.strip() for h in range_list.split(',')]
     new_list = []
     set1 = None
@@ -75,7 +75,7 @@ def expand_item(range_list, onepass=False):
     # Find all the host list plugins
     if 'basestring' not in dir(__builtins__):
         # basestring is not in python3.x
-        #basestring = str
+        basestring = str
         pass
 
     if isinstance(range_list, basestring):
@@ -103,7 +103,7 @@ def expand_item(range_list, onepass=False):
                 found_plugin = True
             else:
                 # This should probably just be an exception
-                print(
+                sys.stderr.write(
                     'plugin', plugin,
                     'not found, valid plugins are:', ','.join(plugins.keys()),
                 )
@@ -244,7 +244,6 @@ def _get_plugins():
         #os.path.join(sys.prefix, 'dist-packages/hostlists'),
         #os.path.join(sys.prefix, 'lib/hostlists'),
         #'/usr/lib/hostlists',
-        '/Users/william.wei/Desktop/python-ssh/src'
     ] + sys.path
     for directory in plugin_path:
         if os.path.isdir(os.path.join(directory, 'plugins')):
@@ -266,7 +265,7 @@ def _get_plugins():
                     ('.py', 'r', imp.PY_SOURCE)
                 )
                 names = mod.name()
-                if isinstance(names, basestring):
+                if isinstance(names, str):
                     names = [names]
                 for name in names:
                     if name not in plugins.keys():
@@ -279,15 +278,3 @@ def _get_plugins():
             if module_file:
                 module_file.close()
     return plugins
-if __name__ == '__main__':
-    print expand('stnd[09-10].com')
-    print expand('stnd30[01-020].stnd.demonware.net')
-    print expand(',,9,stnd03001-3010.stnd.demonware.net,,x,y,x-z,  ,7')
-    print expand(',,,ash.demonware.net,ash,demonware,ware,ash,stnd,stnd,ash,ash00[1-7].ash.demonware.net.')
-    print expand(',,,')
-    print expand('')
-    print expand('--')
-    print expand('__0[09-10]')
-    print expand('stnab-lsg001-3,stnab-ds00[1-4]')
-    print expand('ashdev10001-lsg00[1-3],ashdev1000[0-4]-auth001')
-
