@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 #-*- coding = utf-8 -*-
 ''' the Parallel batch command running environment'''
 '''
@@ -47,7 +47,7 @@ parser.add_argument("-p", "--password", action="store_true", default=False,
     dest="use_password", help="use ssh password?")
 parser.add_argument("-P", "--parallel", type=int, dest="parallel", default=10,
     help="max number of parallel threads , default is 10")
-parser.add_argument("-r", "--range"   , action="store",
+parser.add_argument("-r", "--range"   , action="store", nargs='+',
     dest="range", help="Range of nodes to operate on")
 parser.add_argument("-s", "--shuffle", action="store_true", default=False,
     dest="shuffle", help="Shuffle the server list?")
@@ -86,7 +86,7 @@ if (not command):
 if (options.filename):
     hostnames=query_hosts.get_hosts_from_file(options.filename)
 elif(options.range):
-    hostnames=query_hosts.get_hosts_from_range(options.range)
+    hostnames=query_hosts.get_hosts_from_range(','.join(options.range))
 else:
     parser.error ('one filename or range is required')
 
